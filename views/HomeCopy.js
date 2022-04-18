@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,18 @@ import data from '../data'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import icoMoonconfig from '../assets/selection.json'
 
+import axios from 'axios';
+
+
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
 const Car = createIconSetFromIcoMoon(icoMooConfig, 'icomoon', 'icomoon.ttf')
 
 export default function Home() {
+
+
+  
   return (
     <View
      style={{

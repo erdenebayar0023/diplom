@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   SafeAreaView,
   TouchableOpacity,
+  Image
 }from 'react-native'
 import MapView from 'react-native-maps';
 import mapStyle from '../style';
@@ -16,6 +17,8 @@ import data from '../data'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import { Marker } from 'react-native-maps';
 import icoMoonConfig from '../assets/selection.json'
+import axios from 'axios';
+
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -23,6 +26,26 @@ const ASPECT_RATIO = width / height;
 const Car = createIconSetFromIcoMoon(icoMoonConfig, 'icomoon', 'icomoon.ttf')
 
 export default function Home() {
+
+  const [data1, setData1] = useState([]);
+
+
+  async function makeRequest() {
+
+    let res = await axios.get('http://192.168.193.60:3000/api/v1/car', { 
+      headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
+      })
+
+      setData1(res.data);
+
+    }
+
+  useEffect(() => {
+    makeRequest()
+  }, []);
   return (
     <View
      style={{
@@ -80,18 +103,28 @@ export default function Home() {
           </TouchableOpacity>
         </SafeAreaView>
         <View style={styles.categoryWrapper}>
-             {data.map((data) => {
+             {
+             data1.map((data) => {
                  return(
-                   <View key={data.id} style={styles.category}>
-                     <Text style={{color: data.id === '1' ? '#5d5e6b' : '#c1c2c7' }}>{data.name}</Text>
-                     <Car 
-                      style={{color: data.id === '1' ? '#5d5e6b' : '#c1c2c7' }}
-                      name={data.icon} 
-                      size={45} 
-                     />
+                   <View key={data?._id} style={styles.category}>
+                     <View style={{flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
+                            
+                            <Image
+                              style={{width: 50, height: 50, marginRight: 10, borderRadius: 30}}
+                              source={{
+                                uri: data?.image,
+                              }}
+                            />
+  
+                            <View>
+                              <Text style={{color: data?.id === '1' ? '#5d5e6b' : '#c1c2c7' }}>{data?.name}</Text>
+                              <Text style={{color: data?.id === '1' ? '#5d5e6b' : '#c1c2c7' }}>100-д идэх {data?.gasoline}</Text>
+                            </View>
+                     </View>
                    </View>
                  )
-               })}
+               })
+              }
 
         </View>
       </View>
@@ -126,7 +159,6 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   greenDot: {
     width: 10,
@@ -140,7 +172,6 @@ const styles = StyleSheet.create({
     color: '#8b8d96',
   },
   categoryWrapper: {
-    alignItems: 'flex-end',
     backgroundColor: '#fff',
     padding: 20,
     borderTopLeftRadius: 20,
@@ -157,8 +188,9 @@ const styles = StyleSheet.create({
     shadowRadius:20,
   },
   category: {
-    alignItems: 'center',
     marginBottom: 15,
+    justifyContent: 'center',
+    display: 'flex',
   },
   buttonWrapper: {
     position: 'absolute',
