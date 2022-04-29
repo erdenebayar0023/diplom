@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React,{useEffect, useState} from 'react';
 import MapView ,{ Marker } from 'react-native-maps';
 import {Text, Dimensions ,StyleSheet, View ,SafeAreaView} from 'react-native';
@@ -197,3 +198,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+=======
+import React from 'react';
+import {View, Text} from 'react-native';
+
+export default function Book() {
+  return (
+    <View>
+      <Text>Book</Text>
+    </View>
+  );
+}
+>>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7

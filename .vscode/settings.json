@@ -2,7 +2,11 @@
     "cSpell.words": [
         "Fontisto",
         "Ionicon",
+<<<<<<< HEAD
         "Ionicons",
         "placesearch"
+=======
+        "Ionicons"
+>>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
     ]
 }
