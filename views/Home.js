@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
-=======
-import React,{useEffect, useState} from 'react';
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
 import {
   View,
   Text,
@@ -10,38 +6,59 @@ import {
   Dimensions,
   SafeAreaView,
   TouchableOpacity,
-<<<<<<< HEAD
   Image,
-  Button
+  Button,
+  ScrollView
 } from 'react-native'
-=======
-  Image
-}from 'react-native'
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
 import MapView from 'react-native-maps';
 import mapStyle from '../style';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import data from '../data'
-<<<<<<< HEAD
 import { Marker } from 'react-native-maps';
 import axios from 'axios';
 import * as Location from 'expo-location';
+
+import Geolocation from 'react-native-geolocation-service';
+
+
+import {getDistance, getPreciseDistance} from 'geolib';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
 export default function Home({ navigation }) {
   const [data1, setData1] = useState([]);
+  const [km, setKm] = useState(0);
   const [latlong, setLatLong] = useState({ latitude: 47.927583,
     longitude: 106.888641,});
-    const[location, setLocation] = useState({ "latitude": 47.92752045889474,
-    "longitude": 106.8890054896474,});
+
+    const [visible, setVisible] = useState(false);
+
+  
+
+    const[location, setLocation] = useState({ latitude: 47.92752045889474,
+    longitude: 106.8890054896474,});
+
+    const calculateDistance = (latitude, longitude) => {
+      var dis = getDistance(
+        {latitude: location?.latitude,  longitude: location?.longitude},
+        {latitude: latitude, longitude: longitude},
+      );
+
+      setLatLong({ latitude: latitude, longitude: longitude }) 
+
+      alert(
+        `Зай\n${dis / 1000} KM`
+      );
+      setKm(dis / 1000);
+    };
+
 
   async function makeRequest() {
 
-    let res = await axios.get('http://192.168.207.52:3000/api/v1/car', {
+    let res = await axios.get('http://192.168.193.60:3000/api/v1/car', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
@@ -51,7 +68,7 @@ export default function Home({ navigation }) {
     setData1(res.data);
 
   }
-    makeRequest()
+
     useEffect(() => {
       (async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -61,7 +78,9 @@ export default function Home({ navigation }) {
         }
   
         let location = await Location.getCurrentPositionAsync({});
+        makeRequest()
         setLocation(location);
+        setLocation({'latitude': location?.coords?.latitude, 'longitude' :location?.coords?.longitude});
       })();
     }, []);
     
@@ -73,8 +92,13 @@ export default function Home({ navigation }) {
       }}>
       <MapView
         provider="google"
-mapType='satellite'
-        onPress={(e) => { console.log('e', e.nativeEvent.coordinate); setLatLong({ latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude }) }}
+        mapType='satellite'
+        onPress={
+          (e) => { 
+    
+            calculateDistance(e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude);
+          }
+        }
         style={StyleSheet.absoluteFillObject}
         initialRegion={{
           latitude: 47.92653246934641,
@@ -102,89 +126,12 @@ mapType='satellite'
           </View>
         </Marker>          
       </MapView>
-=======
-import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { Marker } from 'react-native-maps';
-import icoMoonConfig from '../assets/selection.json'
-import axios from 'axios';
-
-
-const {width, height} = Dimensions.get('window');
-const ASPECT_RATIO = width / height;
-
-const Car = createIconSetFromIcoMoon(icoMoonConfig, 'icomoon', 'icomoon.ttf')
-
-export default function Home() {
-
-  const [data1, setData1] = useState([]);
-
-
-  async function makeRequest() {
-
-    let res = await axios.get('http://192.168.193.60:3000/api/v1/car', { 
-      headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        }
-      })
-
-      setData1(res.data);
-
-    }
-
-  useEffect(() => {
-    makeRequest()
-  }, []);
-  return (
-    <View
-     style={{
-       flex: 1,
-     }}>
-      <MapView 
-            provider="google" 
-            style={StyleSheet.absoluteFillObject} 
-            initialRegion={{
-              latitude: 47.92653246934641, 
-              longitude: 106.89001996107875,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421 * ASPECT_RATIO,
-            }}
-      customMapStyle={mapStyle}>
-          <Marker
-            coordinate={{
-             
-              latitude: 47.927583, 
-            longitude: 106.888641,
-            }}>
-            <View style={styles.pin}>
-             <Fontisto name="map-marker-alt" 
-             size={30}
-             style={{color: '#02dc9f'}} 
-             />
-            </View>
-          </Marker>
-          <Marker
-          coordinate={{
-            latitude: 47.917102, 
-            longitude:106.934162,
-            }}
-          >
-            <View style={styles.marker}>
-              <Ionicons name="navigate" size={20} style={{color: '#fff'}} />
-            </View>
-          </Marker>
-        </MapView> 
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
       <View>
         <SafeAreaView style={styles.container}>
           <View>
             <Feather name="menu" size={24} />
           </View>
-<<<<<<< HEAD
           <TouchableOpacity style={styles.search} onPress={() => navigation.navigate("Search")}>
-=======
-          <TouchableOpacity style={styles.search}>
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
             <View style={styles.inputWrapper}>
               <View style={styles.greenDot} />
               <View >
@@ -192,79 +139,53 @@ export default function Home() {
               </View>
             </View>
             <View>
-<<<<<<< HEAD
               <Feather name="heart" size={20} style={{ color: '#97989' }} />
             </View>
           </TouchableOpacity>
         </SafeAreaView>
         <View></View>
-        <View style={styles.categoryWrapper}>
+        <TouchableOpacity style={styles.categoryWrapper} onPress={()=>setVisible(!visible)} >
           {
+            visible === true 
+            ?
             data1.map((data) => {
               return (
-                
-                <View key={data?._id} style={styles.category}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', display: 'flex' }}>
+                <ScrollView>
+                    <View key={data?._id} style={styles.category}>
+    
+                        
+                      <View style={{ flexDirection: 'row', alignItems: 'center', display: 'flex' }}>
+                              <Image
+                                style={{ width: 50, height: 50, marginRight: 10, borderRadius: 30 }}
+                                source={{
+                                  uri: data?.image,
+                                }}
+                              />
 
-                    <Image
-                      style={{ width: 50, height: 50, marginRight: 10, borderRadius: 30 }}
-                      source={{
-                        uri: data?.image,
-                      }}
-                    />
+                              <View>
+                                <Text style={{ color: data?.id === '1' ? '#fff' : '#fff' }}>{data?.name}</Text>
+                                <Text style={{ color: data?.id === '1' ? '#fff' : '#fff' }}>100-д {data?.gasoline}</Text>
+                                <Text style={{ color: data?.id === '1' ? '#fff' : '#fff' }}>Цэг хүртэл {((km / 100) * data?.gasoline).toFixed(2)}</Text>
+                              </View>
+            
 
-                    <View>
-                      <Text style={{ color: data?.id === '1' ? '#fff' : '#fff' }}>{data?.name}</Text>
-                      <Text style={{ color: data?.id === '1' ? '#fff' : '#fff' }}>100-д идэх {data?.gasoline}</Text>
+                      </View>
+                      
                     </View>
-                  </View>
-                </View>
+                </ScrollView>
               )
             })
-          }
-=======
-              <Feather name="heart" size={20} style={{color: '#97989'}} />
-            </View>
-          </TouchableOpacity>
-        </SafeAreaView>
-        <View style={styles.categoryWrapper}>
-             {
-             data1.map((data) => {
-                 return(
-                   <View key={data?._id} style={styles.category}>
-                     <View style={{flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
-                            
-                            <Image
-                              style={{width: 50, height: 50, marginRight: 10, borderRadius: 30}}
-                              source={{
-                                uri: data?.image,
-                              }}
-                            />
-  
-                            <View>
-                              <Text style={{color: data?.id === '1' ? '#5d5e6b' : '#c1c2c7' }}>{data?.name}</Text>
-                              <Text style={{color: data?.id === '1' ? '#5d5e6b' : '#c1c2c7' }}>100-д идэх {data?.gasoline}</Text>
-                            </View>
-                     </View>
-                   </View>
-                 )
-               })
-              }
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
+            : null
 
-        </View>
+          }
+
+        </TouchableOpacity>
       </View>
       <View style={styles.buttonWrapper}>
-<<<<<<< HEAD
         
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Book")}>
           <Text style={styles.buttonText}>Энд дарна уу</Text>
         </TouchableOpacity>
-=======
-       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Би энд байна </Text>
-       </TouchableOpacity>
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
       </View>
     </View>
   );
@@ -287,11 +208,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 10,
     },
-<<<<<<< HEAD
     shadowRadius: 6,
-=======
-    shadowRadius:6,
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
     shadowOpacity: 0.05,
   },
   inputWrapper: {
@@ -309,17 +226,12 @@ const styles = StyleSheet.create({
     color: '#8b8d96',
   },
   categoryWrapper: {
-<<<<<<< HEAD
     backgroundColor: '#fff7',
-=======
-    backgroundColor: '#fff',
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
     padding: 20,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
     position: 'absolute',
     right: 0,
-<<<<<<< HEAD
     top: height / 6,
     shadowColor: '#000',
     shadowOffset: {
@@ -328,16 +240,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 20,
-=======
-    top: height / 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width:2,
-      height: 2,
-    },
-    shadowOpacity:0.1,
-    shadowRadius:20,
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
   },
   category: {
     marginBottom: 15,
@@ -375,9 +277,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
 
   },
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
 });

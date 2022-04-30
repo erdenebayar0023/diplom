@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React,{useEffect, useState} from 'react';
 import MapView ,{ Marker } from 'react-native-maps';
 import {Text, Dimensions ,StyleSheet, View ,SafeAreaView} from 'react-native';
@@ -12,6 +11,9 @@ import MapViewDirections from 'react-native-maps-directions';
 import API_KEY from '../API_KEY';
 import axios from 'axios';
 
+
+import {getDistance, getPreciseDistance} from 'geolib';
+
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
@@ -21,9 +23,29 @@ export default function Book({navigation}) {
   const [data1, setData1] = useState([]);
 
 
+  // const calculateDistance = () => {
+  //   var dis = getDistance(
+  //     {latitude: 20.0504188, longitude: 64.4139099},
+  //     {latitude: 51.528308, longitude: -0.3817765},
+  //   );
+  //   alert(
+  //     `Distance\n\n${dis} Meter\nOR\n${dis / 1000} KM`
+  //   );
+  // };
+ 
+  // const calculatePreciseDistance = () => {
+  //   var pdis = getPreciseDistance(
+  //     {latitude: 20.0504188, longitude: 64.4139099},
+  //     {latitude: 51.528308, longitude: -0.3817765},
+  //   );
+  //   alert(
+  //     `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
+  //   );
+  // };
+ 
   async function makeRequest() {
 
-    let res = await axios.get('http://192.168.14.52:3000/api/v1/car', { 
+    let res = await axios.get('http://192.168.193.60:3000/api/v1/car', { 
       headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -198,15 +220,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-=======
-import React from 'react';
-import {View, Text} from 'react-native';
-
-export default function Book() {
-  return (
-    <View>
-      <Text>Book</Text>
-    </View>
-  );
-}
->>>>>>> 97b2dabaf7c4002ffb4f6c7068b58d972e34d1c7
